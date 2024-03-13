@@ -1,0 +1,73 @@
+{
+  "name": "szero-vite",
+  "version": "1.0.2",
+  "author": "guokeqin",
+  "description": "Configuration and scripts for build React App.",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jason-gkq/szero-vite.git",
+    "directory": "szero-vite"
+  },
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "bugs": {
+    "url": "https://github.com/jason-gkq/szero-vite/issues"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "env.ts",
+    "paths.ts",
+    "vite.config.ts",
+    "package.json",
+    "README.md"
+  ],
+  "bin": {
+    "szero-vite": "./bin/szero-vite.js"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "dependencies": {
+    "@rollup/pluginutils": "^5.1.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "core-js": "^3.34.0",
+    "less": "^4.2.0",
+    "rollup-plugin-visualizer": "^5.11.0",
+    "vite": "^5.0.8",
+    "vite-plugin-html-template-mpa": "1.0.4",
+    "vite-plugin-imagemin": "^0.6.1",
+    "vite-plugin-static-copy": "^1.0.1",
+    "vite-tsconfig-paths": "^4.2.2"
+  },
+  "peerDependencies": {
+    "react": ">= 18",
+    "typescript": ">= 4"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "prettier": "^3.1.1",
+    "typescript": "^5.2.2"
+  }
+}
