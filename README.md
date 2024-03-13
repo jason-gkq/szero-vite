@@ -2,26 +2,36 @@
 
 本脚本适合：`react` + `ts` + `less` 项目进行打包
 
-安装
+#### 前置
+
+配置package.json
+
+```json
+{
+  "type": "module"
+}
+```
+
+#### 安装
 
 ```
 yarn add szero-scripts
 ```
 
-更新包
+#### 更新包
 
 ```shell
 yarn upgrade szero-vite@1.*.*
 yarn upgrade szero-vite --latest
 ```
 
-开发
+#### 开发
 
 ```shell
 yarn start
 ```
 
-打包
+#### 打包
 
 ```shell
 yarn build:test
@@ -31,7 +41,8 @@ yarn build:prod
 
 ### 开发前置准备
 
-1. 环境介绍：
+1. 环境介绍：所有环境可以自行添加，只要scripts中的env的值和根目录下对应配置文件存在则自动回加载该配置文件
+   这里以`local`、`test`、`pre`、`prod`四个环境为例
 
 - local 本地开发
 - test 测试环境
@@ -61,25 +72,44 @@ yarn build:prod
 
 **`env.com.js`为公共业务参数配置文件，其余为各个环境差异性配置**
 
-文件格式如下：
+4. 文件格式如下：
 
 ```js
-{
-  "ENV": "prod"
-}
+// 配置文件中导出defineConfig则配置信息回自动加载到全局变量中
+export const defineConfig = () => ({
+  ENV: 'prod',
+  appName: 'admin',
+  viteConfig: {
+    base: '/admin/',
+    server: {
+      host: 'localhost',
+      port: 3300,
+    },
+    privateConfig:{
+      headScripts: [
+        {
+          src: 'https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.common.js',
+        },
+      ],
+      copyOptions: {
+        targets: [
+          {
+            src: 'bin/example.wasm',
+            dest: 'wasm-files'
+          }
+        ]
+      }
+    }
+    build: {},
+  },
+});
 ```
 
 必要参数配置：
 
 - ENV 环境标识
 - appName 为路由前缀
-- appCode 项目唯一标识
-
-项目中使用方式为：
-
-```js
-const env = process.env.ENV;
-```
+- viteConfig vite配置项，具体配置项参考[vite官方文档](https://cn.vitejs.dev/config/)
 
 4. 项目跟目录添加`jsconfing.json`，主要用于`vscode`识别短路径，`webpack`打包会根据`compilerOptions.paths`中的配置转换为`alias`
 
