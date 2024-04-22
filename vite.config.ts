@@ -53,7 +53,7 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
       viteTsconfigPaths(),
       htmlTemplate({
         template: paths.appHtml,
-        entry: paths.appIndexJs,
+        entry: '/src/index.tsx',
         inject: {
           data: {
             htmlWebpackPlugin: {
