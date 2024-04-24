@@ -49,6 +49,12 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
     plugins: [
       react({
         jsxRuntime: 'classic',
+        babel: {
+          plugins: [
+            ['@babel/plugin-proposal-decorators', { legacy: true }],
+            ['@babel/plugin-proposal-class-properties', { loose: true }],
+          ],
+        },
       }),
       viteTsconfigPaths(),
       htmlTemplate({
