@@ -5,9 +5,15 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 import htmlTemplate from 'vite-plugin-html-template-mpa';
 import transformImport from './lib/vite-plugin-transform-import';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import topLevelAwait from 'vite-plugin-top-level-await';
 
 import paths from './paths';
 import { getClientEnvironment, getAlias } from './env';
+
+/**
+ * vite-plugin-compression  使用 gzip 或者 brotli 来压缩资源
+ * vite-plugin-imagemin  打包压缩图片 在windows上会报错；
+ */
 
 const { raw, stringified } = getClientEnvironment();
 const { productConfig = {} } = raw;
@@ -17,6 +23,9 @@ const {
   base,
   build = {},
   privateConfig,
+  plugins = [],
+  css = {},
+  resolve = {},
   ...restViteConfig
 } = viteConfig;
 
@@ -59,7 +68,8 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
       viteTsconfigPaths(),
       htmlTemplate({
         template: paths.appHtml,
-        entry: '/src/index.tsx',
+        pagesDir: 'src/pages',
+        entry: 'src/index.tsx',
         inject: {
           data: {
             htmlWebpackPlugin: {
@@ -74,6 +84,13 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
       }),
       copyOptions && viteStaticCopy(copyOptions),
       transformImport(),
+      topLevelAwait({
+        // The export name of top-level await promise for each chunk module
+        promiseExportName: '__tla',
+        // The function to generate import names of top-level await promise in each chunk module
+        promiseImportName: (i) => `__tla_${i}`,
+      }),
+      ...plugins,
     ].filter(Boolean),
     css: {
       preprocessorOptions: {
@@ -81,9 +98,11 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
           javascriptEnabled: true,
         },
       },
+      ...css,
     },
     resolve: {
       alias: getAlias(),
+      ...resolve,
     },
   };
 
@@ -102,6 +121,7 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
         // assetsDir: '', // 指定生成静态资源的存放路径（相对于 build.outDir）。在 库模式 下不能使用
         assetsInlineLimit: '4096', // 小于此阈值的导入或引用资源将内联为 base64 编码，以避免额外的 http 请求。设置为 0 可以完全禁用此项。
         chunkSizeWarningLimit: 500,
+        sourcemap: false,
         // sourcemap: '', // boolean | 'inline' | 'hidden'
         // manifest: '', // 包含了没有被 hash 过的资源文件名和 hash 后版本的映射
         // minify: '', // boolean | 'terser' | 'esbuild' 默认： 'esbuild' 设置为 'terser' 时必须先安装 Terser  npm add -D terser
