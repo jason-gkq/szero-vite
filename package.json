@@ -1,6 +1,6 @@
 {
   "name": "szero-vite",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "guokeqin",
   "description": "Configuration and scripts for build React App.",
   "type": "module",
