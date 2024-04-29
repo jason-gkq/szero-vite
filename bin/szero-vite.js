@@ -28,7 +28,8 @@ const params = args.slice(scriptIndex + 1);
 
 if (['build', 'start'].includes(script)) {
   const pathConfig = path.resolve(__dirname, '../vite.config.ts');
-  
+
+  process.env.BUILD_ENV = 'unknown';
   if (params.length > 0) {
     params.forEach((p) => {
       const tmpArg = p.trim().split('=');

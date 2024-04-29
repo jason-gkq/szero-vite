@@ -31,15 +31,6 @@ const {
 
 const { headScripts = [], copyOptions } = privateConfig || {};
 
-// viteStaticCopy({
-//   targets: [
-//     {
-//       src: 'bin/example.wasm',
-//       dest: 'wasm-files'
-//     }
-//   ]
-// })
-
 // rollup插件 https://github.com/rollup/awesome?tab=readme-ov-file
 // vite插件 https://github.com/vitejs/awesome-vite#plugins
 // https://vitejs.dev/config/

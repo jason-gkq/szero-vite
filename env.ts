@@ -3,13 +3,17 @@ import fs from 'fs';
 // import path from 'path';
 import paths from './paths';
 
-// Make sure that including paths.js after env.js will read .env variables.
-// delete require.cache[require.resolve('./paths')];
+let comDefineConfig = () => ({});
+if (fs.existsSync(`${paths.env}/env.com.js`)) {
+  const { defineConfig } = await import(`file://${paths.env}/env.com.js`);
+  comDefineConfig = defineConfig;
+}
 
-const { defineConfig: comDefineConfig } = await import(
-  `file://${paths.env}/env.com.js`
-);
-const { defineConfig } = await import(`file://${paths.appEnvConfig}`);
+let envDefineConfig = () => ({});
+if (fs.existsSync(`${paths.appEnvConfig}`)) {
+  const { defineConfig } = await import(`file://${paths.appEnvConfig}`);
+  envDefineConfig = defineConfig;
+}
 
 export function getClientEnvironment() {
   const raw: any = Object.keys(process.env).reduce((env, key) => {
@@ -38,18 +42,14 @@ export function getClientEnvironment() {
   let productConfig: any = {
     ENV: process.env.BUILD_ENV,
     buildTime: new Date().getTime(),
+    ...comDefineConfig(),
+    ...envDefineConfig(),
   };
   if (fs.existsSync(`${paths.appPackageJson}`)) {
     const packageJsonContent = fs.readFileSync(paths.appPackageJson, 'utf-8');
     const { author, version } = JSON.parse(packageJsonContent);
     productConfig.author = author;
     productConfig.version = version;
-  }
-  if (fs.existsSync(`${paths.env}/env.com.js`)) {
-    Object.assign(productConfig, comDefineConfig && comDefineConfig());
-  }
-  if (fs.existsSync(`${paths.appEnvConfig}`)) {
-    Object.assign(productConfig, defineConfig && defineConfig());
   }
   raw.productConfig = productConfig;
   // Stringify all values so we can feed into webpack DefinePlugin

@@ -75,7 +75,6 @@ export default {
   appSrc: resolveApp('src'),
   appTsConfig: resolveApp('tsconfig.json'),
   appEnvConfig: resolveApp(`env/env.${process.env.BUILD_ENV}.js`),
-  yarnLockFile: resolveApp('yarn.lock'),
   // testsSetup: resolveModule(resolveApp, 'src/setupTests'),
   // proxySetup: resolveApp('src/setupProxy.js'),
   appNodeModules: resolveApp('node_modules'),
@@ -85,6 +84,4 @@ export default {
   ownPath: resolveOwn('.'),
   ownNodeModules: resolveOwn('node_modules'), // This is empty on npm 3
   appTypeDeclarations: resolveApp('src/global.d.ts'),
-  dllsPath: resolveOwn('dll'),
-  dllOutputPath: resolveOwn('dll/*.dll.js'),
 };
