@@ -68,7 +68,7 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
       viteTsconfigPaths(),
       htmlTemplate({
         template: paths.appHtml,
-        pagesDir: 'src/pages',
+        // pagesDir: 'src/pages',
         entry: 'src/index.tsx',
         inject: {
           data: {
